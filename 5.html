@@ -1,76 +1,13 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ร้านขายของพาสเทล</title>
-  <style>
-    body {
-      font-family: "Prompt", sans-serif;
-      background-color: #fdf6f0;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #f9c5d5;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #fff;
-    }
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
-    .product {
-      background: #fff;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      padding: 15px;
-      text-align: center;
-      transition: transform 0.2s;
-    }
-    .product:hover {
-      transform: scale(1.05);
-    }
-    .product img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 12px;
-    }
-    button {
-      background-color: #a1c4fd;
-      border: none;
-      padding: 10px 15px;
-      margin-top: 10px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 1rem;
-      color: #fff;
-    }
-    button:hover {
-      background-color: #779be7;
-    }
-    .cart {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #f9c5d5;
-      padding: 15px;
-      border-radius: 12px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-  </style>
-</head>
+<!-- ...existing code... -->
 <body>
   <header>🛍️ ร้านขายของโทนพาสเทล</header>
+
+  <!-- Filter Buttons -->
+  <div style="text-align:center; margin-top:20px;">
+    <button onclick="filterProducts('all')">ทั้งหมด</button>
+    <button onclick="filterProducts('clothes')">เสื้อผ้า</button>
+    <button onclick="filterProducts('electronics')">อิเล็กทรอนิกส์</button>
+  </div>
 
   <div class="container" id="product-list"></div>
 
@@ -88,17 +25,31 @@
 
     const productList = document.getElementById("product-list");
 
-    products.forEach(product => {
-      const item = document.createElement("div");
-      item.className = "product";
-      item.innerHTML = `
-        <img src="${product.image}" alt="${product.name}">
-        <h3>${product.name}</h3>
-        <p>${product.price} บาท</p>
-        <button onclick="addToCart(${product.id})">ใส่ตะกร้า</button>
-      `;
-      productList.appendChild(item);
-    });
+    function renderProducts(list) {
+      productList.innerHTML = "";
+      list.forEach(product => {
+        const item = document.createElement("div");
+        item.className = "product";
+        item.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <h3>${product.name}</h3>
+          <p>${product.price} บาท</p>
+          <button onclick="addToCart(${product.id})">ใส่ตะกร้า</button>
+        `;
+        productList.appendChild(item);
+      });
+    }
+
+    // Initial render
+    renderProducts(products);
+
+    function filterProducts(category) {
+      if (category === "all") {
+        renderProducts(products);
+      } else {
+        renderProducts(products.filter(p => p.category === category));
+      }
+    }
 
     function addToCart(id) {
       cart.push(id);
@@ -114,5 +65,4 @@
       }
     }
   </script>
-</body>
-</html>
+<!--
